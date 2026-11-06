@@ -1,6 +1,6 @@
 "use strict";
-const VERSION="finbridge-sovereign-v2-shell-20261106";
-const SHELL=["./","./index.html","./style.css","./app.js","./worker.js"];
+const VERSION="finbridge-sovereign-v2-shell-20261106-v3";
+const SHELL=["./","./index.html","./style.css","./app.js","./worker.js","./privacy.html"];
 self.addEventListener("install",event=>{event.waitUntil(caches.open(VERSION).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()));});
 self.addEventListener("activate",event=>{event.waitUntil(caches.keys().then(async keys=>{for(const k of keys){if(k.startsWith("finbridge-sovereign-v2-")&&k!==VERSION)await caches.delete(k);}}).then(()=>self.clients.claim()));});
 self.addEventListener("fetch",event=>{

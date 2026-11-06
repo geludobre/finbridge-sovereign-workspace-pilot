@@ -251,6 +251,20 @@ async function importEncrypted(file){
  if(session){await renderDocs();msg("workspace-message","Backup importat și păstrat criptat.");}
  else{ $("username").value=a.username;msg("identity-message","Backup criptat importat. Deblochează cu parola originală.");}
 }
+async function deleteAccount(){
+ const ss=requireSession();
+ const reply=prompt("Această operație șterge definitiv acest profil și toate proiectele locale. Pentru confirmare, scrie exact numele profilului: "+ss.username);
+ if(reply!==ss.username){msg("workspace-message","Ștergerea a fost anulată.");return;}
+ const rows=await allOwned(ss.username);
+ await new Promise((resolve,reject)=>{
+  const tx=db.transaction(["accounts","docs"],"readwrite");
+  for(const row of rows)tx.objectStore("docs").delete(row.key);
+  tx.objectStore("accounts").delete(ss.username);
+  tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error("Ștergere anulată"));
+ });
+ lock();$("username").value="";
+ msg("identity-message","Seiful și proiectele sale au fost șterse local. Copiile de backup exportate anterior nu sunt afectate.");
+}
 function run(fn){Promise.resolve().then(fn).catch(e=>{console.error("Local operation error:",e.name);msg(session?"workspace-message":"identity-message",e.message||"Operație eșuată",true);});}
 async function boot(){
  if(window.top!==window.self)throw Error("Aplicația nu poate fi inclusă într-un iframe");
@@ -265,6 +279,7 @@ async function boot(){
  $("delete-project").onclick=()=>run(deleteDoc);
  $("analyze").onclick=()=>run(analyze);
  $("export").onclick=()=>run(exportEncrypted);
+ $("delete-account").onclick=()=>run(deleteAccount);
  $("import-file").onchange=e=>run(async()=>{await importEncrypted(e.target.files[0]);e.target.value="";});
  $("import-locked").onchange=e=>run(async()=>{await importEncrypted(e.target.files[0]);e.target.value="";});
  $("project-title").addEventListener("input",()=>{dirty=true;touch();});
@@ -273,7 +288,7 @@ async function boot(){
  window.addEventListener("beforeunload",e=>{if(dirty&&session){e.preventDefault();e.returnValue="";}});
  window.addEventListener("online",connection);window.addEventListener("offline",connection);
  setInterval(()=>{if(session&&Date.now()-session.lastTouch>IDLE_MS)lock();},20000);
- if("serviceWorker"in navigator){navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{});}
+ if("serviceWorker"in navigator){navigator.serviceWorker.register("./sw.js",{scope:"./",updateViaCache:"none"}).catch(()=>{});}
  connection();msg("identity-message","Pregătit. Datele sunt locale acestui profil de browser.");
 }
 function connection(){$("connection").textContent=navigator.onLine?"Browser conectat · date locale":"Offline · date locale";}
