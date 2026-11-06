@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ro"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101e31">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<title>FinBridge Sovereign Workspace</title>
+<link rel="stylesheet" href="./style.css"><script src="./app.js" type="module"></script>
+</head><body><main class="shell">
+<header><div class="eyebrow">FINBRIDGE / SOVEREIGN WORKSPACE / ADULT PILOT</div><h1>Workspace-ul tău. Pe dispozitivul tău.</h1><p class="intro">Date criptate local. Fără cont cloud, fără telemetrie și fără execuție implicită pe LMint. Sesiunile de pe alte dispozitive sunt independente.</p><div class="banner"><strong>Pilot public pentru adulți.</strong> Nu folosi date personale ale copiilor, date școlare, informații medicale sau secrete de producție. Această aplicație nu este Jarvis administrativ.</div></header>
+<section id="identity" class="panel">
+<div class="section-title"><div><span class="eyebrow">IDENTITATE LOCALĂ</span><h2>Creează sau deschide un seif personal</h2></div><span id="connection" class="status">Se verifică rețeaua…</span></div>
+<div class="two">
+<label>Nume profil (doar pe acest dispozitiv)<input id="username" autocomplete="username" maxlength="42" placeholder="ex. atelier-personal" spellcheck="false"></label>
+<label>Parolă de acces locală<input id="password" type="password" autocomplete="new-password" minlength="14" placeholder="Cel puțin 14 caractere"></label>
+</div>
+<div class="actions"><button id="create-account">Creează seif</button><button id="unlock">Deblochează</button><button id="clear-fields" class="secondary">Golește câmpurile</button><label class="file-btn">Importă backup criptat<input id="import-locked" type="file" accept="application/json,.json"></label></div>
+<p class="hint">Parola nu părăsește browserul și nu poate fi recuperată de operator. Pentru un alt dispozitiv se folosește exportul și importul criptat. Dacă uiți parola, datele criptate nu pot fi recuperate.</p>
+<output id="identity-message" class="feedback" aria-live="polite"></output>
+</section>
+<section id="workspace" class="panel hidden">
+<div class="section-title"><div><span class="eyebrow">SESSION / LOCAL ENCRYPTION</span><h2 id="session-heading">Workspace</h2></div><div class="actions"><button id="lock" class="secondary">Blochează sesiunea</button></div></div>
+<div class="stats"><div><small>Dispozitiv</small><strong id="node">Acest browser</strong></div><div><small>Stocare</small><strong>IndexedDB + AES-GCM</strong></div><div><small>Rețea AI</small><strong>Dezactivată</strong></div><div><small>Proiecte</small><strong id="count">0</strong></div></div>
+<div class="columns">
+<section class="list-panel"><div class="row"><h3>Proiecte locale</h3><button id="new-project">Proiect nou</button></div><div id="project-list" class="project-list"></div></section>
+<section class="editor-panel"><div class="eyebrow">EDITOR LOCAL</div><label>Titlu<input id="project-title" maxlength="120" placeholder="Ex.: plan de atelier"></label><label>Note, idei și obiective<textarea id="project-body" maxlength="100000" rows="11" placeholder="Informațiile rămân criptate pe dispozitiv. Nu introduce date sensibile în acest beta."></textarea></label>
+<div class="actions"><button id="save-project">Salvează local</button><button id="analyze" class="secondary">Analiză locală</button><button id="delete-project" class="danger">Șterge proiectul</button></div><output id="analysis-result" class="analysis" aria-live="polite"></output></section>
+</div>
+<div class="backup"><div><h3>Backup controlat de tine</h3><p>Exportă doar date criptate. Pentru recuperare, păstrează fișierul și parola. Importul nu sincronizează automat dispozitivele.</p></div><div class="actions"><button id="export" class="secondary">Export criptat</button><label class="file-btn">Import criptat<input id="import-file" type="file" accept="application/json,.json"></label></div></div>
+<output id="workspace-message" class="feedback" aria-live="polite"></output>
+</section>
+<footer>FinBridge Sovereign Workspace · Pilot independent pentru adulți · Stocare locală · <a href="./privacy.html">Confidențialitate</a> · Nu este un instrument școlar</footer>
+</main></body></html>
